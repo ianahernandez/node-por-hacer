@@ -6,8 +6,6 @@ const colors = require('colors');
 
 const porHacer = require('./por-hacer/por-hacer');
 
-//console.log(argv);
-
 let comando = argv._[0];
 
 switch (comando) {
@@ -17,13 +15,23 @@ switch (comando) {
         break;
 
     case 'listar':
-        let listado = porHacer.listar();
+
+        let listado = porHacer.listar(argv.completo);
+        let titulo = '=====  Tarea  ====='.yellow;
+        let cadena = '==================='.yellow;
+        if (argv.completo == 'false') {
+            titulo = '==== Por hacer ===='.green;
+            cadena = '==================='.green;
+        } else if (argv.completo == 'true') {
+            titulo = '====== Hecho ======'.red;
+            cadena = '==================='.red;
+        }
 
         for (let tarea of listado) {
-            console.log('==== Por hacer ===='.green);
+            console.log(titulo);
             console.log(tarea.descripcion);
             console.log('Estado: ', tarea.completado);
-            console.log('==================='.green);
+            console.log(cadena);
         }
 
         break;

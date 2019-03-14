@@ -15,9 +15,6 @@ const cargarDB = () => {
     } catch (error) {
         listadoPorHacer = [];
     }
-
-
-    console.log(listadoPorHacer);
 }
 
 const crear = (descripcion) => {
@@ -27,14 +24,29 @@ const crear = (descripcion) => {
         completado: false
     };
 
-    listadoPorHacer.push(porHacer);
-    guardarDB();
-    return porHacer;
+    let index = listadoPorHacer.findIndex(tarea => tarea.descripcion.toUpperCase() === descripcion.toUpperCase());
+    if (index < 0) {
+        listadoPorHacer.push(porHacer);
+        guardarDB();
+        return porHacer;
+    }
+    console.log("La tarea ya se encuentra guardada");
+    return false;
+
 }
 
-const listar = () => {
+const listar = (completo) => {
     cargarDB();
-    return listadoPorHacer;
+    if (completo === undefined)
+        return listadoPorHacer;
+    else {
+        if (completo) {
+            return listadoPorHacer.filter(tarea => tarea.completado);
+        } else if (!completo) {
+            return listadoPorHacer.filter(tarea => !tarea.completado);
+        } else
+            console.log('Filtro no válido')
+    }
 }
 
 const actualizar = (descripcion, completado = true) => {
